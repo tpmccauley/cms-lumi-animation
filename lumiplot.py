@@ -1,15 +1,23 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[16]:
 
+
+import pandas as pd
+import matplotlib
+
+from matplotlib.font_manager import FontProperties
+import matplotlib.dates as mdates
+import matplotlib.lines as mlines
+import matplotlib.pyplot as plt
 
 # https://cern.ch/cmslumi/publicplots/lumiByDay.csv
 lumi = pd.read_csv('lumiByDay.csv')
 lumi.head()
 
 
-# In[ ]:
+# In[18]:
 
 
 lumi['Date'] = pd.to_datetime(lumi.Date)
@@ -26,15 +34,11 @@ lumi['LHC delivered'] = lumi['Delivered(/ub)'].cumsum() / 1e9
 lumi.tail()
 
 
-# In[ ]:
+# In[19]:
 
 
 cms_orange= (0.945, 0.76, 0.157)
 cms_blue = (0.0, 0.596, 0.831)
-
-from matplotlib.font_manager import FontProperties
-import matplotlib.dates as mdates
-import matplotlib.lines as mlines
 
 FONT_PROPS_SUPTITLE = FontProperties(size="x-large", weight="bold", stretch="condensed")
 FONT_PROPS_TITLE = FontProperties(size="large", weight="regular")
@@ -46,7 +50,7 @@ matplotlib.rcParams["font.size"] = 10.8
 matplotlib.rcParams["axes.labelweight"] = "bold"
 
 
-# In[ ]:
+# In[22]:
 
 
 for i in range(2,len(lumi)):
@@ -57,6 +61,7 @@ for i in range(2,len(lumi)):
     
     axes.tick_params(axis='y', which='both', labelright=True)
     
+    '''
     ylocs, ylabels = plt.yticks() 
     for label in ylabels:
         label.set_font_properties(FONT_PROPS_TICK_LABEL)
@@ -64,6 +69,7 @@ for i in range(2,len(lumi)):
     xlocs, xlabels = plt.xticks() 
     for label in xlabels:
         label.set_font_properties(FONT_PROPS_TICK_LABEL)
+    '''
     
     lumi_delivered = '{0:.2f}'.format(lumi[1:i]['LHC delivered'].values[-1])
     lumi_recorded = '{0:.2f}'.format(lumi[1:i]['CMS recorded'].values[-1])
@@ -90,4 +96,5 @@ for i in range(2,len(lumi)):
                prop={'weight':'bold', 'size':'large'})
     
     plt.savefig('./images/lumi'+str(i-1)+'.png')
+    plt.close()
 
